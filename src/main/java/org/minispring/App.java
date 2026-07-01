@@ -1,9 +1,10 @@
 package org.minispring;
 
-public class App 
-{
-    public static void main(String[] args )
-    {
+import org.minispring.context.MiniApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        MiniApplicationContext context = new MiniApplicationContext("com.minispring.service");
 
     }
 }
