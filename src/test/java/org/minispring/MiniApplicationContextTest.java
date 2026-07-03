@@ -45,6 +45,7 @@ public class MiniApplicationContextTest {
     @Test
     void testLifecycleCallback() {
         MiniApplicationContext context = new MiniApplicationContext("org.minispring.service");
-        ServiceA controller = context.getBean(ServiceA.class);
+        ServiceB controller = context.getBean(ServiceB.class);
+        assertTrue(controller.isInitialized());
     }
 }

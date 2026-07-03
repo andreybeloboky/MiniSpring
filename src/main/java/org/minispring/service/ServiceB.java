@@ -8,6 +8,7 @@ import org.minispring.annotation.InitializingBean;
 public class ServiceB implements InitializingBean {
     @Autowired
     private ServiceA serviceA;
+    private boolean initialized = false;
 
     public void run() {
         serviceA.hello();
@@ -16,6 +17,11 @@ public class ServiceB implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        initialized = true;
         System.out.println("ServiceB initialized after!");
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 }
