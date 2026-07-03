@@ -50,7 +50,7 @@ public class MiniApplicationContext {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error when scanning a package: " + basePackage, e);
         }
     }
 

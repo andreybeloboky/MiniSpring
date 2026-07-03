@@ -11,6 +11,6 @@ public class ServiceA implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        System.out.println("ServiceA готов к работе!");
+        System.out.println("ServiceA initialized after!");
     }
 }
