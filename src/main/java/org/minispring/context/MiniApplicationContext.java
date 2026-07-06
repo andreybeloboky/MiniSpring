@@ -64,7 +64,7 @@ public class MiniApplicationContext {
                     try {
                         field.set(bean, dependency);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException("Error when inject dependencies: " + bean, e);
                     }
                 }
             }
