@@ -3,12 +3,14 @@ package org.minispring.context;
 import org.minispring.annotation.Autowired;
 import org.minispring.annotation.Component;
 import org.minispring.annotation.InitializingBean;
+import org.minispring.exception.*;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MiniApplicationContext {
 
@@ -28,29 +30,25 @@ public class MiniApplicationContext {
             URL resource = Thread.currentThread().getContextClassLoader().getResource(path);
 
             if (resource == null) {
-                throw new RuntimeException("Package " + basePackage + " isn't found in classpath");
+                throw new PackageNotFoundException("Package " + basePackage + " isn't found in classpath");
             }
 
             File directory = new File(resource.getFile());
-
-            for (File file : directory.listFiles()) {
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
                 if (file.getName().endsWith(".class")) {
                     String className = basePackage + "." + file.getName().replace(".class", "");
                     Class<?> clazz = Class.forName(className);
 
                     if (clazz.isAnnotationPresent(Component.class)) {
                         Object instance = clazz.getDeclaredConstructor().newInstance();
-
                         injectDependencies(instance);
-
                         initializeBean(instance);
-
                         beans.put(clazz, instance);
                     }
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error when scanning a package: " + basePackage, e);
+            throw new PackageScanException("Error when scanning a package: " + basePackage, e);
         }
     }
 
@@ -64,7 +62,7 @@ public class MiniApplicationContext {
                     try {
                         field.set(bean, dependency);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException("Error when inject dependencies: " + bean, e);
+                        throw new DependencyInjectionException("Error when inject dependencies: " + bean, e);
                     }
                 }
             }

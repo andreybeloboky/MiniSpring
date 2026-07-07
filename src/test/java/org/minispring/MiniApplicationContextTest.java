@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MiniApplicationContextTest {
 
     @Test
-    void testContextLoading() {
+    void contextLoadsTest() {
         MiniApplicationContext context = new MiniApplicationContext("org.minispring.service");
         assertNotNull(context.getBean(ServiceA.class));
         ServiceB b = context.getBean(ServiceB.class);
@@ -25,12 +25,12 @@ public class MiniApplicationContextTest {
     }
 
     @Test
-    void testURLdoesntExist() {
+    void packageNotFoundThrowsTest() {
         assertThrows(RuntimeException.class, () -> new MiniApplicationContext("com.minispring.nonexistent"));
     }
 
     @Test
-    void testDependencyInjection() {
+    void dependencyInjectedTest() {
         MiniApplicationContext context = new MiniApplicationContext("org.minispring.service");
         ServiceB controller = context.getBean(ServiceB.class);
         assertNotNull(controller);
@@ -43,7 +43,7 @@ public class MiniApplicationContextTest {
     }
 
     @Test
-    void testLifecycleCallback() {
+    void lifecycleCallbackWorksTest() {
         MiniApplicationContext context = new MiniApplicationContext("org.minispring.service");
         ServiceB controller = context.getBean(ServiceB.class);
         assertTrue(controller.isInitialized());
